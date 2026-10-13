@@ -1,0 +1,24 @@
+name: dbt
+
+services:
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.9.0
+    platform: linux/amd64
+    working_dir: /usr/app
+    environment:
+      DBT_PROFILES_DIR: /usr/app
+      DBT_HOST: postgres
+      DBT_PORT: 5432
+      DBT_USER: ${POSTGRES_USER}
+      DBT_PASSWORD: ${POSTGRES_PASSWORD}
+      DBT_DBNAME: ${POSTGRES_DB}
+      DBT_SCHEMA: ${DBT_SCHEMA:-analytics}
+    volumes:
+      - ./project:/usr/app
+    networks:
+      - data-platform
+
+networks:
+  data-platform:
+    external: true
+    name: data-platform
