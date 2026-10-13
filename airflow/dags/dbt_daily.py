@@ -15,7 +15,7 @@ with DAG(
     default_args={"retries": 1, "retry_delay": pendulum.duration(minutes=5)},
     tags=["dbt"],
 ) as dag:
-    dbt_debug = BashOperator(task_id="dbt_debug", bash_command=f"{DBT} debug", cwd=DBT_DIR)
+    dbt_debug = BashOperator(task_id="dbt_debug", bash_command=f"{DBT} debug --connection", cwd=DBT_DIR)
     dbt_seed = BashOperator(task_id="dbt_seed", bash_command=f"{DBT} seed", cwd=DBT_DIR)
     dbt_run = BashOperator(task_id="dbt_run", bash_command=f"{DBT} run", cwd=DBT_DIR)
     dbt_test = BashOperator(task_id="dbt_test", bash_command=f"{DBT} test", cwd=DBT_DIR)
