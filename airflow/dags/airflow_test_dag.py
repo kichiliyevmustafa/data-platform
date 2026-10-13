@@ -9,4 +9,4 @@ with DAG(
     catchup=False,
     tags=["test"],
 ) as dag:
-    BashOperator(task_id="test dag", bash_command="echo 'Airflow calisiyor!'")
+    BashOperator(task_id="aiflow_test_dag", bash_command="echo 'Airflow calisiyor!'")
