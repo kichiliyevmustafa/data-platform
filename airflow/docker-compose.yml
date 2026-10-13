@@ -1,19 +1,33 @@
 name: airflow
 
 x-airflow-common: &airflow-common
-  image: apache/airflow:2.10.5
+  build: .
+  image: airflow-dbt:2.10.5
   user: "${AIRFLOW_UID:-50000}:0"
   environment: &airflow-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${AIRFLOW_DB:-airflow}
     AIRFLOW__CORE__LOAD_EXAMPLES: "false"
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: "Asia/Baku"
+    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: "Asia/Baku"
     AIRFLOW__WEBSERVER__SECRET_KEY: "data-platform-secret"
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
+    # dbt ayarları
+    DBT_PROFILES_DIR: /opt/airflow/dbt
+    DBT_HOST: postgres
+    DBT_PORT: 5432
+    DBT_USER: ${POSTGRES_USER}
+    DBT_PASSWORD: ${POSTGRES_PASSWORD}
+    DBT_DBNAME: ${POSTGRES_DB}
+    DBT_SCHEMA: ${DBT_SCHEMA:-analytics}
+    DBT_TARGET_PATH: /tmp/dbt_target
+    DBT_LOG_PATH: /tmp/dbt_logs
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
+    - ../dbt/project:/opt/airflow/dbt
   networks:
     - data-platform
 
