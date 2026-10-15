@@ -10,7 +10,7 @@ with source as (
 
 cleaned as (
 
-    select
+    select current_date as load_date,
         id                                                      as user_id,
         initcap(trim(first_name))                               as first_name,
         initcap(trim(last_name))                                as last_name,
