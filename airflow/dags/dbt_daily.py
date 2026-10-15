@@ -5,6 +5,11 @@ from airflow.operators.bash import BashOperator
 DBT = "/home/airflow/dbt_venv/bin/dbt"
 DBT_DIR = "/opt/airflow/dbt"
 
+# Haftalık / aylık modeller kendi DAG'lerinde çalışır, burada hariç tutulur.
+EXCLUDE = "--exclude tag:weekly tag:monthly"
+
+# Her gün 06:00'da dbt projesini çalıştırır (weekly/monthly etiketliler hariç).
+# Tek bir model çalıştırmak için: dbt_single_model DAG'ini kullanın.
 with DAG(
     dag_id="dbt_daily",
     description="dbt seed -> run -> test, her gün saat 06:00 (Bakü)",
@@ -17,7 +22,7 @@ with DAG(
 ) as dag:
     dbt_debug = BashOperator(task_id="dbt_debug", bash_command=f"{DBT} debug --connection", cwd=DBT_DIR)
     dbt_seed = BashOperator(task_id="dbt_seed", bash_command=f"{DBT} seed", cwd=DBT_DIR)
-    dbt_run = BashOperator(task_id="dbt_run", bash_command=f"{DBT} run", cwd=DBT_DIR)
-    dbt_test = BashOperator(task_id="dbt_test", bash_command=f"{DBT} test", cwd=DBT_DIR)
+    dbt_run = BashOperator(task_id="dbt_run", bash_command=f"{DBT} run {EXCLUDE}", cwd=DBT_DIR)
+    dbt_test = BashOperator(task_id="dbt_test", bash_command=f"{DBT} test {EXCLUDE}", cwd=DBT_DIR)
 
     dbt_debug >> dbt_seed >> dbt_run >> dbt_test
