@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_user_addresses
+    description: "Temizlenmiş kullanıcı adresleri"
+    columns:
+      - name: address_id
+        tests:
+          - unique
+          - not_null
+      - name: user_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_users')
+              field: user_id
+      - name: address_type
+        tests:
+          - accepted_values:
+              values: ['home', 'work', 'billing']
+      - name: country_code
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['AZ', 'TR']

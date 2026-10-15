@@ -2,7 +2,7 @@
 -- Test verisi bilerek "kirli": boşluklar, büyük/küçük harf karışık e-postalar,
 -- farklı telefon formatları, tutarsız status değerleri.
 
-DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.users CASCADE;
 
 CREATE TABLE public.users (
     id          SERIAL PRIMARY KEY,

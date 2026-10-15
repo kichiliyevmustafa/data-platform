@@ -8,3 +8,5 @@ sources:
     tables:
       - name: users
         description: "Ham kullanıcı tablosu"
+      - name: user_addresses
+        description: "Ham kullanıcı adresleri (bir kullanıcının birden fazla adresi olabilir)"
