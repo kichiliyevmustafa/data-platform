@@ -10,7 +10,7 @@ with source as (
 
 cleaned as (
 
-    select current_date as load_date,
+    select now()  as load_date,
         id                                                  as address_id,
         user_id,
         lower(trim(address_type))                           as address_type,

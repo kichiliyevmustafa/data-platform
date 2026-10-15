@@ -1,4 +1,4 @@
-select current_date as load_date,
+select now()  as load_date,
     id as customer_id,
     first_name || ' ' || last_name as full_name,
     city
