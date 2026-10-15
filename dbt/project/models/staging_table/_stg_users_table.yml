@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: stg_users_table
+    description: "Temizlenmiş kullanıcı verisi"
+    columns:
+      - name: user_id
+        tests:
+          - unique
+          - not_null
+      - name: full_name
+        tests:
+          - not_null
+      - name: email
+        tests:
+          - unique
+      - name: status
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive', 'pending', 'banned']
